@@ -1,8 +1,8 @@
 #!/bin/bash
 
-age=18
+grade=95
 
-if [ $age -lt 18 ]
+if [ $grade -ge 90 ] && [ $grade -le 100 ]
 then
-    echo "Age is less than 18"
+    echo "Excellent"
 fi

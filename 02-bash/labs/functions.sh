@@ -1,12 +1,8 @@
 #!/bin/bash
 
-print_args() {
-    echo "Number of arguments: $#"
-    echo "script name: $0"
-    echo "First argument: $1"
-    echo "Second argument: $2"
-    echo "All arguments: $@"
-
+calculate_md5sum() {
+    local file_path="$1"
+    md5sum "$file_path" | awk '{ print $1 }'
 }
 
-print_args "alice" "bob" "charlie"
+calculate_md5sum "./log.txt"
