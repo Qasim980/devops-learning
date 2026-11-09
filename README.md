@@ -1,16 +1,16 @@
 # DevOps Learning Journey
 
-Your personal repository for tracking progress through the CoderCo DevOps curriculum.
+My public record of learning DevOps, following the [CoderCo](https://www.skool.com/coderco) curriculum. Everything I study ends up here: my notes, hands-on labs with the commands and errors included, and projects built along the way.
 
-## Quick Start
+## About This Repo
 
-1. Click **"Use this template"** then **"Create a new repository"**
-2. Clone your new repo locally
-3. Start learning and commit your progress
+I'm building towards a DevOps and Cloud engineering career. I'm using this repo to:
 
-![UseTemplate](./images/UseTemplate.png)
+- **Learn in public** and keep myself accountable
+- **Document real work**, including the mistakes and how I fixed them
+- **Show my progress** to anyone curious about how I learn and build
 
-![CreateRepo](./images/Createrepo.png)
+If you're new here, start with the [Progress Tracker](#progress-tracker) to see where I'm up to, then dive into any module that interests you.
 
 ## Repository Structure
 
@@ -29,51 +29,34 @@ devops-learning/
 ```
 
 Each module contains:
-- **notes/** – Your personal notes and summaries
-- **labs/** – Completed lab exercises
-- **projects/** – Hands-on projects
+
+- **notes/**: my personal notes and summaries, written in my own words
+- **labs/**: completed lab exercises, with commands, outputs and errors
+- **projects/**: hands-on projects, each with its own code and README
 
 ## Progress Tracker
 
 | Module | Status | Notes | Labs | Projects |
 |--------|--------|-------|------|----------|
-| 01 - Linux | Not Started | 0/0 | 0/0 | 0/0 |
-| 02 - Bash | Not Started | 0/0 | 0/0 | 0/0 |
-| 03 - Git | Not Started | 0/0 | 0/0 | 0/0 |
-| 04 - Networking | Not Started | 0/0 | 0/0 | 0/0 |
-| 05 - Docker | Not Started | 0/0 | 0/0 | 0/0 |
-| 06 - AWS | Not Started | 0/0 | 0/0 | 0/0 |
-| 07 - Terraform | Not Started | 0/0 | 0/0 | 0/0 |
-| 08 - CI/CD | Not Started | 0/0 | 0/0 | 0/0 |
-| 09 - Kubernetes | Not Started | 0/0 | 0/0 | 0/0 |
+| [01 - Linux](./01-linux) | Complete|
+| [02 - Bash](./02-bash) | Complete |
+| [03 - Git](./03-git) | Completed |
+| [04 - Networking](./04-networking) |
+| [05 - Docker](./05-docker) | Not Started |
+| [06 - AWS](./06-aws) | Not Started |
+| [07 - Terraform](./07-terraform) | Not Started |
+| [08 - CI/CD](./08-cicd) | Not Started |
+| [09 - Kubernetes](./09-kubernetes) | Not Started |
 
-Update this table as you progress.
+*Updated as I progress.*
 
-## How to Use This Repo
+## How to Navigate
 
-### Taking Notes
+- **Want to see how I think?** Browse a module's `notes/` folder.
+- **Want to see what I've actually done?** Check `labs/` for step-by-step write-ups.
+- **Want to see what I've built?** Look in `projects/`. Each project has its own README explaining what it does and how to run it.
 
-After each lesson, create a note:
-
-```bash
-touch 01-linux/notes/file-permissions.md
-```
-
-Write in your own words – this helps you remember.
-
-### Completing Labs
-
-Document what you did and what you learned:
-
-```bash
-touch 01-linux/labs/lab01-basic-commands.md
-```
-
-Include commands, outputs, and any errors you hit.
-
-### Building Projects
-
-Create a folder with your code and a README:
+Example project layout:
 
 ```
 01-linux/projects/backup-script/
@@ -81,33 +64,24 @@ Create a folder with your code and a README:
 └── README.md
 ```
 
-## Best Practices
+## How I Work
 
-**Commit often** – After each lesson, lab, or meaningful progress.
+- **Commit often**: after each lesson, lab or meaningful step of progress.
+- **Clear commit messages**: for example, `Add notes on Linux file permissions`, not `updates`.
+- **Own words only**: writing things up myself is how I make them stick.
+- **Keep it organised**: every file lives in the right module and folder.
 
-**Write good commit messages:**
+## Connect
 
-```bash
-# Bad
-git commit -m "updates"
+Feedback, corrections and suggestions are very welcome. Open an issue, or get in touch:
 
-# Good
-git commit -m "Add notes on Linux file permissions"
-```
-
-**Stay organised** – Put files in the right folders.
-
-**Share your progress** – Post on LinkedIn, tag @CoderCo!
-
-## Useful Links
-
-- [CoderCo Community](https://www.skool.com/coderco)
-- [CoderCo Dotfiles](https://github.com/coderco-learning/dotfiles)
+- LinkedIn: (https://www.linkedin.com/in/qasim-sabir/)
+- GitHub: (https://github.com/Qasim980)
 
 ## License
 
-MIT – Use this template however you like.
+MIT. Use anything here however you like.
 
 ---
 
-Questions? Ask in the CoderCo community.
+Learning in public, one commit at a time.
