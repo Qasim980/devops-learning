@@ -41,7 +41,7 @@ Each module contains:
 | [01 - Linux](./01-linux) | Complete|
 | [02 - Bash](./02-bash) | Complete |
 | [03 - Git](./03-git) | Completed |
-| [04 - Networking](./04-networking) |
+| [04 - Networking](./04-networking) | Started |
 | [05 - Docker](./05-docker) | Not Started |
 | [06 - AWS](./06-aws) | Not Started |
 | [07 - Terraform](./07-terraform) | Not Started |
