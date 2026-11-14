@@ -1,58 +1,24 @@
-# 04 - Networking
+# Networking Module
 
-Understanding networking is crucial for debugging, security, and infrastructure design.
+This repository contains my hands-on learning projects and notes for the Networking module in my DevOps journey.
 
-## What You'll Learn
+## Contents
 
-- OSI model and TCP/IP
-- IP addressing and subnets (CIDR)
-- DNS and how domain resolution works
-- HTTP/HTTPS and TLS
-- Load balancers and reverse proxies
-- Firewalls and security groups
-- Common ports and protocols
+* **nginx-ec2-cloudflare/**
+  Step-by-step project deploying NGINX on an AWS EC2 instance (Ubuntu), configured with a custom domain (`qasimsabir.co.uk`) using Cloudflare DNS.
+  Includes the setup script and detailed instructions.
 
-## Folder Structure
+* **Notes/**
+  Collection of notes on key networking concepts such as DNS, OSI model, routing, subnetting, and troubleshooting.
 
-```
-04-networking/
-├── notes/       # Your notes from lessons
-├── labs/        # Completed lab exercises
-└── projects/    # Hands-on projects
-```
+* **screenshots/**
+  Visual documentation supporting the projects and notes.
 
-## Suggested Projects
+## Goals
 
-- [ ] Set up a local DNS server
-- [ ] Configure nginx as a reverse proxy
-- [ ] Create a subnet calculator script
-- [ ] Analyse traffic with tcpdump/Wireshark
+* Build foundational networking knowledge for cloud and infrastructure engineering.
+* Practice managing cloud resources in AWS.
+* Learn practical DNS management and web server deployment.
+* Prepare for real-world DevOps tasks and interviews.
 
-## Key Concepts
-
-| Port | Protocol | Use |
-|------|----------|-----|
-| 22 | SSH | Secure shell |
-| 80 | HTTP | Web traffic |
-| 443 | HTTPS | Secure web traffic |
-| 53 | DNS | Domain resolution |
-| 3306 | MySQL | Database |
-| 5432 | PostgreSQL | Database |
-| 6379 | Redis | Cache |
-
-## Useful Commands
-
-```bash
-ping <host>           # Test connectivity
-curl -v <url>         # HTTP request with details
-dig <domain>          # DNS lookup
-nslookup <domain>     # DNS lookup
-netstat -tuln         # Show listening ports
-ss -tuln              # Show listening ports (modern)
-traceroute <host>     # Trace network path
-```
-
-## Resources
-
-- [Subnet Calculator](https://www.subnet-calculator.com/)
-- [DNS Explained](https://howdns.works/)
+Feel free to explore the individual folders for detailed projects and notes.
