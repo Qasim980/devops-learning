@@ -1,0 +1,13 @@
+version: '3.12-slim'
+services:
+  web:
+    image: challenge:latest
+    build: .
+    ports:
+      - "5003:5003"
+    depends_on:
+      - redis
+  redis:
+    image: "redis:latest"
+    ports:
+      - "6379:6379"
