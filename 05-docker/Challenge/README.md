@@ -1,113 +1,86 @@
-# Multi-Containers Challenge: Flask + Redis with Docker Compose
+# 🐳 Multi-Container Challenge: Flask + Redis
 
-A multi-container application built as part of CoderCo.
+# A Multi-container app project
 
-A Python Flask web app uses a Redis database to count page visits, and both services run in their own containers, managed with Docker Compose.
+A Python Flask web app uses Redis to count page visits, with each service in its own container, managed by Docker Compose.
 
 ## Architecture
 
 ```
-            Browser
-               │
-     http://localhost:5003
-               │
-┌──────────────┼─────────────────────────────┐
-│  Docker Compose network (challenge_default)│
-│              ▼                             │
-│     ┌─────────────────┐    redis:6379      │
-│     │ web (Flask app) │ ─────────────────► │──┐
-│     │ port 5003       │                    │  │
-│     └─────────────────┘                    │  ▼
-│                                ┌─────────────────┐
-│                                │ redis           │
-│                                │ key: "visits"   │
-│                                └─────────────────┘
-└────────────────────────────────────────────┘
+        Browser 🌐
+           │
+  http://localhost:5003
+           │
+┌──────────┼──────── Compose network ─────────┐
+│          ▼                                  │
+│   ┌──────────────┐   redis:6379   ┌───────┐ │
+│   │  web (Flask) │ ─────────────► │ redis │ │
+│   └──────────────┘                └───────┘ │
+└─────────────────────────────────────────────┘
 ```
 
-- **web**: Flask app, built from the `Dockerfile` in the project root. It is the only service published to the host.
-- **redis**: Redis key-value store. It is **not** published to the host; only the Flask container reaches it, over the internal Compose network.
+- **web**: the Flask app, and the only service published to the host
+- **redis**: stores the `visits` counter; reachable only over the internal network
 
-The Flask app connects to Redis using the hostname `redis`. That works because Compose puts both containers on a shared network with built-in DNS, where each **service name** resolves to that container's IP address.
+Flask connects using the hostname `redis`. Compose's built-in DNS resolves each **service name** to that container's IP address.
 
-## Project structure
+## 📁 Project structure
 
 ```
 .
-├── app.py               # Flask app with / and /count routes
-├── requirements.txt     # Python dependencies (flask, redis)
-├── Dockerfile           # Image for the Flask app
-├── redis/
-│   └── Dockerfile       # Image for Redis (based on the official image)
+├── app.py               # Flask app: / and /count routes
+├── requirements.txt     # flask, redis
+├── Dockerfile           # Flask image
+├── redis/Dockerfile     # Redis image
 ├── docker-compose.yml   # Defines and connects both services
-├── .dockerignore        # Keeps unneeded files out of the build
-└── README.md
+└── .dockerignore
 ```
 
-## How to run
-
-**Requirements:** Docker with the Compose plugin (`docker compose`).
+## 🚀 How to run
 
 ```bash
-# Build the images and start both containers
-docker compose up --build
-
-# In another terminal, check both services are running
-docker compose ps
-
-# Stop and remove the containers
-docker compose down
+docker compose up --build   # build and start
+docker compose ps           # check both services are up
+docker compose down         # stop and remove
 ```
 
-## Endpoints
+## 🔗 Endpoints
 
 | URL | What it does |
 |---|---|
-| `http://localhost:5003/` | Shows a welcome message |
-| `http://localhost:5003/count` | Increments the visit counter in Redis and shows the total |
+| `http://localhost:5003/` | 👋 Welcome message |
+| `http://localhost:5003/count` | 🔢 Increments and shows the visit count |
 
-Refresh `/count` and the number goes up each time.
+## 🧠 Key design decisions
 
-## ⚠️ Deviation from the brief: port 5003 instead of 5000
+- **`INCR` for the counter**: atomic, so the count stays correct across multiple Flask instances
+- **Flask binds to `0.0.0.0`**: the default `127.0.0.1` would only accept traffic from inside the container
+- **Dependencies installed before the code is copied**: layer caching means editing `app.py` doesn't reinstall packages
+- **Redis not published to the host**: it has no password by default, and Flask reaches it internally anyway
+- **`build:` instead of `image:`**: Compose rebuilds from source, so code changes get picked up
 
-The challenge tests on `localhost:5000`. This project uses **port 5003** instead.
+## 🛠️ What broke and what I learned
 
-**Why:** on macOS (Monterey and later), the **AirPlay Receiver** feature (`ControlCenter` process) listens on port 5000, so Docker can't bind to it. I chose to change the app's port rather than turn off a system feature.
+| Problem ❌ | Lesson ✅ |
+|---|---|
+| `redis-server: not found` during build | `RUN` runs at build time and processes don't carry over. Redis gets its own container. |
+| `/count` returned **500** | A container started with plain `docker run` sits on the default network, where `redis` doesn't resolve. Use Compose. |
+| `address already in use` on port 5000 | macOS AirPlay Receiver holds 5000. Found it with `lsof -i :5000` and moved to 5003. |
+| `port is already allocated` on 5003 | An old `docker run` container held the port. `docker compose ps` only shows this project; `docker ps` shows everything. |
+| `/count` gave **404**, `/counter` worked | Compose was running an old pre-built image. Switched to `build:` and checked with `docker compose exec web cat app.py`. |
+| `version` is obsolete warning | Compose v2 ignores it, so I removed it. |
 
-To use port 5000, either turn off AirPlay Receiver (System Settings → General → AirDrop & Handoff), or keep the app on 5003 and change the host side of the port mapping in `docker-compose.yml` to `"5000:5003"`.
+## 🎯 Bonus tasks
 
-## Key design decisions
+- [ ] Persistent Redis storage with a named volume
+- [ ] Redis connection details from environment variables
+- [ ] Scale Flask behind a load balancer
 
-- **`INCR` for the counter**: Redis's `INCR` reads and increments in one atomic step, so the count stays correct even with several Flask instances running at once. A read-add-write approach could lose visits.
-- **Flask binds to `0.0.0.0`**: the default (`127.0.0.1`) only accepts connections from inside the container itself, so the browser on the host couldn't reach it.
-- **Dependencies installed before the code is copied**: Docker caches each layer, so editing `app.py` doesn't trigger a full reinstall of packages on every rebuild.
-- **Redis not published to the host**: Redis has no password by default. Flask reaches it over the internal network, so publishing port 6379 would only expose the database for no benefit.
-- **`build:` instead of `image:` for the web service**: Compose rebuilds the image from source, so code changes are picked up with `docker compose up --build`.
-
-## Troubleshooting log: what broke and what I learned
-
-| Problem | Cause | Fix / lesson |
-|---|---|---|
-| `redis-server: not found` during build | Tried to start Redis inside the Flask image with `RUN` | `RUN` runs at **build time** and processes don't carry over into the image. Redis belongs in its own container (one container, one job). |
-| `/count` returned **500 Internal Server Error** | Flask was running in a container started with plain `docker run`, on Docker's default network, where the name `redis` doesn't resolve | Service-name DNS only works on a Compose (or user-defined) network. Run everything through Compose. |
-| `bind: address already in use` on port 5000 | macOS AirPlay Receiver holds port 5000 | Found with `lsof -i :5000`. Moved the app to port 5003 (see above). |
-| `Bind for 0.0.0.0:5003 failed: port is already allocated` | An old container from an earlier `docker run` still held port 5003 | `docker compose ps` only shows containers in the current project. `docker ps` shows all of them. Stopped and removed the stray container. |
-| `/count` gave **404** but `/counter` worked | Compose used an old, pre-built image (`image: challenge`) with the old route name, so `--build` had nothing to rebuild | Switched the web service to `build:`. Checked the code inside the container with `docker compose exec web cat app.py`. |
-| Warning: `the attribute version is obsolete` | The `version:` key is no longer used by Compose v2 | Removed it. |
-
-## Bonus tasks
-
-- [ ] **Persistent storage**: named volume for Redis data, so the count survives `docker compose down`
-- [ ] **Environment variables**: read the Redis host and port from env vars instead of hard-coding them
-- [ ] **Scaling**: run multiple Flask instances behind a load balancer (e.g. NGINX)
-
-## Useful commands
+## 📋 Handy commands
 
 ```bash
-docker compose up --build        # build and start
-docker compose ps                # services in this project
-docker ps                        # all running containers on the machine
 docker compose logs web          # logs for one service
-docker compose exec web <cmd>    # run a command inside a running container
-lsof -P -i :<port>               # find which process holds a port (macOS/Linux)
+docker compose exec web <cmd>    # run a command inside a container
+docker ps                        # all running containers
+lsof -P -i :<port>               # what's holding a port?
 ```
